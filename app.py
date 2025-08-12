@@ -9,6 +9,7 @@ deepseek_url= "https://api.deepseek.com/chat/completions"
 # Parse the feed
 DEVOPS_FEEDS = [
     # "Terraform", "Azure", "AWS", "DevOps", "Devops Automation", "Prometheus", "APM", "AI in DevOps"
+    "AWS", "AI in DevOps", "Daily hacks for Git"
 ]
 
 def create_index_readme():
