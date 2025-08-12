@@ -4,13 +4,23 @@ from datetime import datetime, timezone
 import os
 
 # DEEPSEEK Keys and URL
-api_key= "sk-"
+api_key = os.getenv("DEEPSEEK_API_KEY")
 deepseek_url= "https://api.deepseek.com/chat/completions"
 
 # Parse the feed
 DEVOPS_FEEDS = [
-    "Terraform", "Azure", "AWS", "DevOps", "Devops Automation", "Prometheus", "APM", "AI in DevOps"
+    # "Terraform", "Azure", "AWS", "DevOps", "Devops Automation", "Prometheus", "APM", "AI in DevOps"
 ]
+
+def create_index_readme():
+    files = sorted([f for f in os.listdir() if f.startswith("news_summary_") and f.endswith(".md")])
+    content = "# DevOps News Archives\n\n"
+    for file in files:
+        date_str = file.replace("news_summary_", "").replace(".md", "")
+        content += f"- [{date_str}]({file})\n"
+
+    with open("README.md", "w") as f:
+        f.write(content)
 
 # Summarise the link from the RSS feed
 def summarise_with_deepseek(topic, date):
@@ -43,10 +53,20 @@ def summarise_with_deepseek(topic, date):
 
 def get_devops_news():
     today = datetime.now(timezone.utc).date()
+
+    # Create README file with content of each day news
+    filename= f"news_summary_{today}.md"
+
+    content = f"# DevOps Daily News Summary - {today}\n\n"
+
     for topic in DEVOPS_FEEDS:
         print(f"\n--- Fetching article for : {topic} ---")
         summary = summarise_with_deepseek(topic, today)
-        print(f"Summary: {summary}\n")
+        content += f"## {topic}\n\n{summary}\n\n---\n\n"
+
+    with open(filename, "w") as f:
+        f.write(content)
 
 if __name__== "__main__":
     get_devops_news()
+    create_index_readme()

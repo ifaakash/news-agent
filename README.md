@@ -1,4 +1,3 @@
-# Install Dependencies
-All the dependencies are listed in the requirements.txt file. We need to install them using below command
+# DevOps News Archives
 
-`pip install -r requirements.txt`
+- [2025-08-12](news_summary_2025-08-12.md)
