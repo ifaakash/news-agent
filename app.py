@@ -4,54 +4,21 @@ from datetime import datetime, timezone
 import os
 
 # DEEPSEEK Keys and URL
-api_key= "sk-674c45e5cb784699ba1ada484c45143e"
+api_key= "sk-"
 deepseek_url= "https://api.deepseek.com/chat/completions"
 
 # Parse the feed
 DEVOPS_FEEDS = [
-    # Terraform
-    "https://github.com/hashicorp/terraform/releases.atom",
-    "https://www.hashicorp.com/blog/category/terraform/feed",
-
-    # Google
-    "https://news.google.com/rss/search?q=devops",
-
-    # AWS
-    "https://aws.amazon.com/new/feed/",
-    "https://aws.amazon.com/blogs/devops/feed/",
-
-    # Azure
-    "https://azure.microsoft.com/en-us/updates/feed/",
-
-    # GCP
-    "https://cloud.google.com/feeds/products.xml",  # Google Cloud updates
-
-    # Kubernetes
-    "https://github.com/kubernetes/kubernetes/releases.atom",
-
-    # GitHub Actions
-    "https://github.blog/changelog/label/actions/feed/",
-
-    # Docker
-    "https://www.docker.com/blog/feed/",
-
-    # GitLab
-    "https://about.gitlab.com/releases.xml",
-
-    # Jenkins
-    "https://www.jenkins.io/changelog-stable/rss.xml",
-
-    # CNCF blog
-    "https://www.cncf.io/feed/"
+    "Terraform", "Azure", "AWS", "DevOps", "Devops Automation", "Prometheus", "APM", "AI in DevOps"
 ]
 
 # Summarise the link from the RSS feed
-def summarise_with_deepseek(title,link):
+def summarise_with_deepseek(topic, date):
     prompt= f"""
-    Summarise this artile in 3 sentences and state if it is related to devops:
-        Title: {title}
-        Link : {link}
+    Give me three article related to {topic} and give me a detailed summary of it. The article should be with reference to latest date which is {date}.
+    You can include open source projects as well that i can try upon, which sounds exciting.
     """
+
     headers = {"Authorization": f"Bearer {api_key}"}
     data = {
         "model": "deepseek-chat",
@@ -76,17 +43,10 @@ def summarise_with_deepseek(title,link):
 
 def get_devops_news():
     today = datetime.now(timezone.utc).date()
-    for rss_url in DEVOPS_FEEDS:
-        print(f"\n--- Fetching from: {rss_url} ---")
-        feed = feedparser.parse(rss_url)
-        for entry in feed.entries:
-            try:
-                published = datetime(*entry.published_parsed[:6]).date()
-            except AttributeError:
-                continue  # skip if no publish date
-            if published == today:
-                summary = summarise_with_deepseek(entry.title, entry.link)
-                print(f"Title: {entry.title}\nLink: {entry.link}\nSummary: {summary}\n")
+    for topic in DEVOPS_FEEDS:
+        print(f"\n--- Fetching article for : {topic} ---")
+        summary = summarise_with_deepseek(topic, today)
+        print(f"Summary: {summary}\n")
 
 if __name__== "__main__":
     get_devops_news()
