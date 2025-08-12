@@ -1,5 +1,4 @@
 import requests
-import feedparser
 from datetime import datetime, timezone
 import os
 
