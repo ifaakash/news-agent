@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 import os
 
 # DEEPSEEK Keys and URL
-api_key= "sk-674c45e5cb784699ba1ada484c45143e"
+api_key= "sk-"
 deepseek_url= "https://api.deepseek.com/chat/completions"
 
 # Parse the feed
