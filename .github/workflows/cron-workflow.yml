@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  if: false
   newsletter:
     runs-on: ubuntu-latest
     steps:
