@@ -5,6 +5,10 @@ on:
     - cron: "0 9 * * *"
   workflow_dispatch:
 
+permissions:
+  content: read
+  actions: write
+
 jobs:
   if: false
   newsletter:
